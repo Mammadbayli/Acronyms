@@ -18,6 +18,13 @@ class ViewController: UIViewController {
         tableView.dataSource = self
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: reuseIdentifier)
         tableView.translatesAutoresizingMaskIntoConstraints = false
+        
+        let label = UILabel()
+        label.text = "Type in search box"
+        label.textAlignment = .center
+        label.contentMode = .center
+        tableView.backgroundView = label
+        
         return tableView
     }()
     
@@ -33,18 +40,9 @@ class ViewController: UIViewController {
         view.backgroundColor = .red
         
         setupUI()
-        
-        viewModel.getLongForms(forAcronym: "ssf")
-    }
-    
-    func updateUI() {
-        DispatchQueue.main.async {
-            self.tableView.reloadData()
-        }
     }
     
     func setupUI() {
-        
         tableView.tableHeaderView = searchBar
         
         view.addSubview(tableView)
@@ -57,9 +55,46 @@ class ViewController: UIViewController {
         ])
     }
     
+    func updateUI() {
+        DispatchQueue.main.async {
+            self.tableView.reloadData()
+            self.clearError()
+        }
+    }
+    
+    func clearError() {
+       showError(error: "")
+    }
+    
+    func showError(error: String) {
+        DispatchQueue.main.async {
+            (self.tableView.backgroundView as! UILabel).text = error
+        }
+    }
+    
     func bind() {
         viewModel.longForms.bind {[weak self] longForms in
             self?.updateUI()
+        }
+        
+        viewModel.error.bind { [weak self] error in
+            var errorString = ""
+            switch error {
+            case .badURL:
+                break
+            case .networkError(let string):
+                errorString = string
+            case .parsingError(let string):
+                errorString = string
+            case .unknown(let string):
+                errorString = string
+            case .none:
+                break
+            case .some(.notFound(let string)):
+                errorString = string
+            }
+            
+            self?.showError(error: errorString)
         }
     }
     

@@ -6,7 +6,8 @@
 //
 
 import Foundation
-class ImplementsSearchAcronymsViewControllerViewModel: SearchAcronymsViewControllerViewModel {    
+class ImplementsSearchAcronymsViewControllerViewModel: SearchAcronymsViewControllerViewModel {
+    var error = Binding<APIError?>(value: nil)
     var longForms = Binding<[LongForm]>(value: [LongForm]())
     private var timer: Timer?
     
@@ -20,7 +21,11 @@ class ImplementsSearchAcronymsViewControllerViewModel: SearchAcronymsViewControl
         
         timer = Timer.scheduledTimer(withTimeInterval: 0.5, repeats: false) { _ in
             AcronymParser.shared.getLongForms(forAcronym: acronym) {[weak self] longForms, error in
-                self?.longForms.value = longForms
+                if let error {
+                    self?.error.value = error
+                } else {
+                    self?.longForms.value = longForms
+                }
             }
         }
         

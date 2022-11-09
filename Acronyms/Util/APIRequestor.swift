@@ -9,9 +9,10 @@ import Foundation
 
 enum APIError: Error {
     case badURL
+    case notFound(String)
     case networkError(String)
     case parsingError(String)
-    case unknown(Error)
+    case unknown(String)
 }
 
 class APIRequestor {
@@ -21,7 +22,12 @@ class APIRequestor {
         let session = URLSession.shared
         let request = URLRequest(url: url)
         session.dataTask(with: request) { data, response, error in
-            completion(data, nil)
+            if let data {
+                completion(data, nil)
+            } else {
+                completion(nil, .networkError("Check your internet connection"))
+            }
+            
         }.resume()
     }
     
