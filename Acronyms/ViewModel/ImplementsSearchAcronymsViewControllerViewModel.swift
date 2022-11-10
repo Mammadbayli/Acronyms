@@ -9,10 +9,12 @@ import Foundation
 class ImplementsSearchAcronymsViewControllerViewModel: SearchAcronymsViewControllerViewModel {
     var error = Binding<APIError?>(value: nil)
     var longForms = Binding<[LongForm]>(value: [LongForm]())
+    
     private var timer: Timer?
     
     func getLongForms(forAcronym acronym: String) {
         timer?.invalidate()
+        timer = nil
         
         guard acronym.count > 1 else {
             longForms.value = [LongForm]()
@@ -28,9 +30,6 @@ class ImplementsSearchAcronymsViewControllerViewModel: SearchAcronymsViewControl
                 }
             }
         }
-        
-        
-     
     }
     
     init() {

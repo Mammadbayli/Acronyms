@@ -17,20 +17,148 @@ final class AcronymsTests: XCTestCase {
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.
     }
-
-    func testExample() throws {
-        // This is an example of a functional test case.
-        // Use XCTAssert and related functions to verify your tests produce the correct results.
-        // Any test you write for XCTest can be annotated as throws and async.
-        // Mark your test throws to produce an unexpected failure when your test encounters an uncaught error.
-        // Mark your test async to allow awaiting for asynchronous code to complete. Check the results with assertions afterwards.
+    
+    func testAPIRequestor() {
+        //test API requestor get method
     }
 
-    func testPerformanceExample() throws {
-        // This is an example of a performance test case.
-        self.measure {
-            // Put the code you want to measure the time of here.
+    func testAPIParserSuccess() {
+        let parser = AcronymParser.shared
+        var result = [LongForm]()
+        var error: APIError?
+        let expectation = expectation(description: "expect api response")
+        
+        parser.getLongForms(forAcronym: "usa") { _result, _error in
+            result = _result
+            error = _error
+            
+            expectation.fulfill()
         }
+        
+        wait(for: [expectation], timeout: 30)
+        
+        XCTAssert(result.count > 0, "count should be more than 0")
+        XCTAssertNil(error)
     }
-
+    
+    func testAPIParserFailureWhenLengthisOne() {
+        let parser = AcronymParser.shared
+        var result = [LongForm]()
+        var error: APIError?
+        let expectation = expectation(description: "expect api response")
+        
+        parser.getLongForms(forAcronym: "u") { _result, _error in
+            result = _result
+            error = _error
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 30)
+        
+        XCTAssert(result.count == 0, "count should be 0")
+        XCTAssertNotNil(error)
+    }
+    
+    func testAPIParserFailureWhenTooLong() {
+        let parser = AcronymParser.shared
+        var result = [LongForm]()
+        var error: APIError?
+        let expectation = expectation(description: "expect api response")
+        
+        parser.getLongForms(forAcronym: "usfsfsfsfdsfsfsf") { _result, _error in
+            result = _result
+            error = _error
+            
+            expectation.fulfill()
+        }
+        
+        wait(for: [expectation], timeout: 30)
+        
+        XCTAssert(result.count == 0, "count should be 0")
+        XCTAssertNotNil(error)
+    }
+    
+    func testBinding() {
+        var binding = Binding<String>(value: "")
+        var bindingCalled = false
+        binding.bind { val in
+            bindingCalled = true
+        }
+        
+        binding.value = "new value"
+        
+        XCTAssertTrue(bindingCalled)
+    }
+    
+    func testSearchSuccess() {
+        let viewModel = ImplementsSearchAcronymsViewControllerViewModel()
+        let expectation = expectation(description: "seaerch pass expectation")
+        
+        viewModel.longForms.bind { _ in
+            expectation.fulfill()
+        }
+        
+        viewModel.getLongForms(forAcronym: "usa")
+        
+        wait(for: [expectation], timeout: 30)
+        
+        XCTAssert(viewModel.longForms.value.count > 0)
+    }
+    
+    func testSearchError() {
+        let viewModel = ImplementsSearchAcronymsViewControllerViewModel()
+        let expectation = expectation(description: "search fail expectation")
+        
+        viewModel.error.bind { err in
+            expectation.fulfill()
+        }
+        
+        viewModel.getLongForms(forAcronym: "usadsdfdfsfsfsfg")
+        
+        wait(for: [expectation], timeout: 30)
+    }
+    
+    func testSearchThrottling() {
+        let viewModel = ImplementsSearchAcronymsViewControllerViewModel()
+        var numberOfTimesCalled = 0
+        let expectation1 = expectation(description: "throttling pass expectation1")
+        
+        viewModel.longForms.bind { _ in
+            numberOfTimesCalled += 1
+        }
+        
+        viewModel.getLongForms(forAcronym: "usa")
+        viewModel.getLongForms(forAcronym: "usa")
+        
+        XCTWaiter.wait(for: [expectation1], timeout: 5)
+        
+        XCTAssertEqual(numberOfTimesCalled, 1)
+    }
+    
+    func testSearchNotThrottling() {
+        let viewModel = ImplementsSearchAcronymsViewControllerViewModel()
+        var numberOfTimesCalled = 0
+        
+        let expectation1 = expectation(description: "throttling pass expectation1")
+        let expectation2 = expectation(description: "throttling pass expectation2")
+        
+        var expectations = [expectation1, expectation2]
+        
+        viewModel.longForms.bind { _ in
+            numberOfTimesCalled += 1
+            
+            expectations.popLast()?.fulfill()
+        }
+        
+        viewModel.getLongForms(forAcronym: "us")
+        
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.7) {
+            viewModel.getLongForms(forAcronym: "us")
+        }
+        
+        wait(for: expectations, timeout: 30)
+        
+        XCTAssert(numberOfTimesCalled == 2)
+    }
 }

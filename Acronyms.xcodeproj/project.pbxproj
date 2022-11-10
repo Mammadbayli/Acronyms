@@ -23,6 +23,17 @@
 		6DDF66A7291C55A300AA05B9 /* AcronymParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66A6291C55A300AA05B9 /* AcronymParser.swift */; };
 		6DDF66A9291C565C00AA05B9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66A8291C565C00AA05B9 /* Constants.swift */; };
 		6DDF66AB291C598100AA05B9 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66AA291C598100AA05B9 /* Binding.swift */; };
+		6DDF66AC291C729E00AA05B9 /* APIRequestor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66A4291C547A00AA05B9 /* APIRequestor.swift */; };
+		6DDF66AD291C72A100AA05B9 /* AcronymParser.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66A6291C55A300AA05B9 /* AcronymParser.swift */; };
+		6DDF66AE291C72A300AA05B9 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66A8291C565C00AA05B9 /* Constants.swift */; };
+		6DDF66AF291C72A600AA05B9 /* Binding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66AA291C598100AA05B9 /* Binding.swift */; };
+		6DDF66B0291C72A800AA05B9 /* SearchAcronymsViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF669F291C512200AA05B9 /* SearchAcronymsViewControllerViewModel.swift */; };
+		6DDF66B1291C72AA00AA05B9 /* ImplementsSearchAcronymsViewControllerViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF66A1291C530100AA05B9 /* ImplementsSearchAcronymsViewControllerViewModel.swift */; };
+		6DDF66B2291C72AC00AA05B9 /* APIResponse.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF669A291C509400AA05B9 /* APIResponse.swift */; };
+		6DDF66B3291C72AE00AA05B9 /* LongForm.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF669C291C50A400AA05B9 /* LongForm.swift */; };
+		6DDF66B4291C72B000AA05B9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF6669291C505A00AA05B9 /* AppDelegate.swift */; };
+		6DDF66B5291C72B200AA05B9 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF666B291C505A00AA05B9 /* SceneDelegate.swift */; };
+		6DDF66B6291C72B400AA05B9 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6DDF666D291C505A00AA05B9 /* ViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -113,6 +124,7 @@
 		6DDF6668291C505A00AA05B9 /* Acronyms */ = {
 			isa = PBXGroup;
 			children = (
+				6DDF66B7291C74CC00AA05B9 /* Mocks */,
 				6DDF66A3291C546E00AA05B9 /* Util */,
 				6DDF669E291C510C00AA05B9 /* ViewModel */,
 				6DDF6699291C508800AA05B9 /* Model */,
@@ -170,6 +182,13 @@
 				6DDF66AA291C598100AA05B9 /* Binding.swift */,
 			);
 			path = Util;
+			sourceTree = "<group>";
+		};
+		6DDF66B7291C74CC00AA05B9 /* Mocks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Mocks;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -320,7 +339,18 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6DDF66B1291C72AA00AA05B9 /* ImplementsSearchAcronymsViewControllerViewModel.swift in Sources */,
 				6DDF6681291C505B00AA05B9 /* AcronymsTests.swift in Sources */,
+				6DDF66B0291C72A800AA05B9 /* SearchAcronymsViewControllerViewModel.swift in Sources */,
+				6DDF66AD291C72A100AA05B9 /* AcronymParser.swift in Sources */,
+				6DDF66AC291C729E00AA05B9 /* APIRequestor.swift in Sources */,
+				6DDF66B2291C72AC00AA05B9 /* APIResponse.swift in Sources */,
+				6DDF66B6291C72B400AA05B9 /* ViewController.swift in Sources */,
+				6DDF66AE291C72A300AA05B9 /* Constants.swift in Sources */,
+				6DDF66B5291C72B200AA05B9 /* SceneDelegate.swift in Sources */,
+				6DDF66B3291C72AE00AA05B9 /* LongForm.swift in Sources */,
+				6DDF66B4291C72B000AA05B9 /* AppDelegate.swift in Sources */,
+				6DDF66AF291C72A600AA05B9 /* Binding.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
